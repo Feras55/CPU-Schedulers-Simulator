@@ -7,6 +7,8 @@ public  class Process implements Comparable<Process> {
     int exitTime;
     int turnAroundTime;
     int waitingTime;
+    int queueNumber;
+
 
     public int getArrivalTime() {
         return this.arrivalTime;

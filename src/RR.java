@@ -7,7 +7,6 @@ public class RR {
     int contextSwitchTime;
     ArrayList<Process> processesList = new ArrayList<Process>(); ///Info table of the processes
     ArrayList<Process> queue = new ArrayList<Process>(); ///execution queue, (simulating Gantt chart)
-    ArrayList<String>granttChart = new ArrayList<String>();
     double averageWaitingTime =0.0;
     double averageTurnAroundTime=0.0;
     int timer=0;
@@ -55,20 +54,23 @@ public class RR {
     void run(){
         takeInputs();
         //take process and run it, all processes came at same time
+       executeProcess();
+        print();
+    }
+    void executeProcess(){
         queue.add(processesList.get(0)); ///Add first process to queue
         int processIdx = 1; ///process pointer at second process
         for (int i = 0; i < queue.size() ; i++)
         {
             Process p = queue.get(i);
-            granttChart.add(p.name);
             ///if P's burst time is <= quantumTime, calculate its exit time, turnAroundTime , and waiting time.
             if(p.curBurstTime <= timeQuantum){
                 timer+=p.curBurstTime;
                 p.exitTime=timer;
                 p.turnAroundTime = p.exitTime - p.arrivalTime;
                 p.waitingTime = p.turnAroundTime - p.burstTime;
-                p.curBurstTime = processesList.get(processesList.indexOf(p)).curBurstTime;
-                processesList.set(processesList.indexOf(p),p) ; ///update process p in the processList
+//                p.curBurstTime = processesList.get(processesList.indexOf(p)).curBurstTime;
+//                processesList.set(processesList.indexOf(p),p) ; ///update process p in the processList
                 queueSize--; //process is terminated
                 if(queueSize>0 && queue.size()==i+1){
                     queue.add(processesList.get(processIdx));
@@ -90,10 +92,8 @@ public class RR {
                 }
                 queue.add(p);
             }
-                timer+=contextSwitchTime;
+            timer+=contextSwitchTime;
         }
-
-        print();
     }
 
     void print(){
@@ -120,10 +120,5 @@ public class RR {
         System.out.println("Average WaitingTime is: " + averageWaitingTime);
     }
 
-
-    public static void main(String[] args) {
-
-
-    }
 
 }

@@ -1,13 +1,12 @@
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class FCFS {
-Queue<Process> queue = new LinkedList<>();
-PriorityQueue<Process> burstTimeList = new PriorityQueue<>();
-void contextSwitch(){
 
-}
+ArrayList<Process>ProcessesList = new ArrayList<Process>();
+
+
+
 
 
 
