@@ -4,6 +4,8 @@ public class Priority {
     ArrayList<Process> processesList = new ArrayList<Process>(); ///Info table of the processes
     ArrayList<Process> ganttChart = new ArrayList<Process>(); ///execution queue, (simulating Gantt chart)
     ArrayList<Process> queue = new ArrayList<Process>();
+    int contextSwitchTime;
+    boolean isItSwitchingQuestionMark;
     int remProcesses; ///starts as total number of processes, then acts as the remainder processes, where it decreases whenever a process terminates
     double averageWaitingTime =0.0;
     double averageTurnAroundTime=0.0;
@@ -25,6 +27,7 @@ public class Priority {
 
     void takeInputs(){  //Take processes, arranges them in queue according to their arrival time.
         Scanner sc = new Scanner(System.in);
+        contextSwitchTime = 0;
         System.out.println("Enter number of processes");
         remProcesses = sc.nextInt();
 
@@ -57,11 +60,25 @@ public class Priority {
 
     }
     void executeProcess(){
+        int contextSwitchTimer=0;
+        isItSwitchingQuestionMark=false;
         remProcesses =processesList.size(); ///Starts as total size
         for (timer = 0; remProcesses >0 ; timer++) {
             if(timer%10==0){ //Checks for starvation every 10 seconds
                 aging();
             }
+            if(isItSwitchingQuestionMark==true){  ///to handle the case of contextSwitching time
+                contextSwitchTimer++;
+                if(contextSwitchTimer>=contextSwitchTime){
+                    isItSwitchingQuestionMark=false;
+                    contextSwitchTimer=0;
+                }
+                else{
+                    contextSwitchTimer++;
+                    continue;
+                }
+            }
+
             for (int i = 0; i < processesList.size(); i++) { ///if process arrived, add it to queue
                 Process p = processesList.get(i);
                 if (p.arrivalTime == timer) {
@@ -82,8 +99,15 @@ public class Priority {
                 if(p.curBurstTime==0){  //process ended
                     p.turnAroundTime=(timer+1) - p.arrivalTime;
                     p.waitingTime=p.turnAroundTime - p.burstTime;
+                    if(queue.size()>1){
+                        //There are more processes in the queue
+                        if(contextSwitchTime>0){
+                            isItSwitchingQuestionMark=true;
+                        }
+                    }
                     queue.remove(0);
                     remProcesses--;
+
                     continue;
                 }
 
@@ -95,6 +119,7 @@ public class Priority {
 
     void print(){
         ///process Execution order
+        System.out.print("Gantt Chart: ");
         for (int i = 0; i < ganttChart.size(); i++) {
             System.out.print(ganttChart.get(i).name + " ");
         }

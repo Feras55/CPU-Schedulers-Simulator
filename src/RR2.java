@@ -123,6 +123,7 @@ public class RR2 {
 
     void print(){
         ///process Execution order
+        System.out.print("Gantt Chart: ");
         for (int i = 0; i < ganttChart.size(); i++) {
             System.out.print(ganttChart.get(i).name + " ");
         }

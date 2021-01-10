@@ -6,7 +6,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         while(work){
         System.out.println("Choose the desired algorithm to run\n" +
-                "1. Shortest-Job First (SJF)\n " +
+                "1. Shortest-Job First (SJF)\n" +
                 "2. Round Robin (RR)\n"+
                 "3. Priority Scheduling\n"+
                 "4. Multi level\n"+
@@ -15,7 +15,7 @@ public class Main {
         switch (choice){
             case 1:
                 SJF scheduler1 = new SJF();
-               // scheduler1.run();
+                scheduler1.run();
                 break;
             case 2:
                 RR2 scheduler2 = new RR2();

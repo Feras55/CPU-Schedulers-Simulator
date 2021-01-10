@@ -65,6 +65,7 @@ public class MultiLevel {
 
     void executeProcess(){
         ///start process, look at processTable w get
+        isItSwitchingQuestionMark=false;
         int contextSwitchTimer=0;
         int quantumTimer=0;
         Process prevProcess = null; ///A process to placed to the back of the queue if its quantum ended,
@@ -108,7 +109,7 @@ public class MultiLevel {
                     if(p.curBurstTime==0){  //process ended
                         p.turnAroundTime=(timer+1) - p.arrivalTime;
                         p.waitingTime=p.turnAroundTime - p.burstTime;
-                        if(RRqueue.size()>0 || FCFSqueue.size()>0){ ///check if there is a process waiting in any queue
+                        if(RRqueue.size()>1 || FCFSqueue.size()>0){ ///check if there is a process waiting in any queue
                            if(contextSwitchTime>0){
                             isItSwitchingQuestionMark=true;
                            }
@@ -145,7 +146,7 @@ public class MultiLevel {
                     p.turnAroundTime=(timer+1) - p.arrivalTime;
                     p.waitingTime=p.turnAroundTime - p.burstTime;
                     processesList.set(processesList.indexOf(p),p) ; ///update process p with waiting time and turn around time in the processList
-                    if(RRqueue.size()>0 || FCFSqueue.size()>0){ ///check if there is a process waiting in any queue
+                    if(RRqueue.size()>0 || FCFSqueue.size()>1){ ///check if there is a process waiting in any queue
                         if(contextSwitchTime>0){
 
                             isItSwitchingQuestionMark=true;
@@ -165,6 +166,7 @@ public class MultiLevel {
 
     void print(){
         ///process Execution order
+        System.out.print("Gantt Chart: ");
         for (int i = 0; i < ganttChart.size(); i++) {
             System.out.print(ganttChart.get(i).name + " ");
         }
